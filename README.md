@@ -172,13 +172,76 @@ Potential future configurations include baby, pet, security, elderly, wildlife, 
 
 Vision Sentinel also does not need to become another full NVR. Mature projects such as Frigate already handle RTSP ingestion, recording, motion detection, hardware acceleration, and camera management well. Ideally, Vision Sentinel can integrate with those systems and focus on **reasoning, escalation, and reliability**.
 
+## Camera input
+
+The first implemented layer. See [docs/reolink-e1-pro.md](docs/reolink-e1-pro.md)
+for what the hardware actually does, measured rather than assumed.
+
+```
+sources/    vendor integration - how to reach a stream
+recorder/   buffer and fan-out to consumers
+view.py     development MJPEG viewer (a bus consumer)
+```
+
+`sources/` rather than `cameras/` because canary testing replays known clips
+through the real pipeline: a test clip is a source but not a camera, and should
+be an ordinary implementation rather than a special case.
+
+There is deliberately no `Source` base class yet. One vendor is too small a
+sample to design an interface from — the directory is the commitment to the
+layering, and the protocol gets extracted when a second source shows what
+actually varies.
+
+`FrameBus` applies no backpressure: a slow consumer skips frames rather than
+stalling the decoder, so a laggy debug viewer can never slow the CV path. It
+holds one frame rather than a queue, which is why the decode loop has no
+accumulating state.
+
+### Setup
+
+Credentials live in `.env`, which is gitignored:
+
+```bash
+cp .env.example .env   # then fill in REOLINK_HOST / USER / PASSWORD
+uv sync
+```
+
+Enable RTSP on the camera first (recent Reolink firmware ships it off, under
+Network -> Advanced -> Port Settings). Use the camera's own device account, not
+a Reolink cloud login.
+
+### Usage
+
+```bash
+uv run vs-camera probe          # report what each stream really is
+uv run vs-camera view           # live MJPEG at http://127.0.0.1:8080/
+uv run vs-camera view --stream main --port 8080
+```
+
+`view` binds to localhost by default, so the feed is not exposed on the LAN.
+
+### What the first long run taught us
+
+A 12-hour run streamed 318,912 frames at a flat 10.00 fps for 8h52m, then
+stopped delivering — while ping, TCP on 554, `RTSP/1.0 200 OK`, the camera's
+HTTP API, and its own `"online": 1` status all continued to report healthy.
+
+The cause turned out to be host-side, not the camera: ffmpeg on the monitoring
+machine could no longer reach that address, while every other tool could. That
+makes the lesson sharper rather than weaker — **a watchdog has to detect its
+own inability to obtain frames, not the camera's health.** Only the frame count
+caught it, and a watchdog sharing the host would have been blind to it.
+
+See [docs/reolink-e1-pro.md](docs/reolink-e1-pro.md) for the full trace.
+
 ## Current status
 
 Very early.
 
 The initial roadmap:
 
-* [ ] Camera / RTSP input and rolling buffer
+* [x] Camera / RTSP input
+* [ ] Rolling buffer
 * [ ] Continuous CV pipeline
 * [ ] Local Qwen video inference
 * [ ] Triggered VLM review
@@ -189,7 +252,7 @@ The initial roadmap:
 * [ ] Independent watchdog
 * [ ] Canary tests
 * [ ] Baby-monitor configuration
-* [ ] IR / night-vision evaluation
+* [ ] IR / night-vision evaluation (see the dusk failure above)
 * [ ] Measure false positives and false negatives
 * [ ] Generalize the monitor interface
 

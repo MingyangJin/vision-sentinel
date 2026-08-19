@@ -1,0 +1,18 @@
+[project]
+name = "vision-sentinel"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Mingyang Jin", email = "j442907192@gmail.com" }
+]
+requires-python = ">=3.13"
+dependencies = []
+
+[project.scripts]
+vs-camera = "vision_sentinel.cli:main"
+vision-sentinel = "vision_sentinel:main"
+
+[build-system]
+requires = ["uv_build>=0.9.26,<0.10.0"]
+build-backend = "uv_build"
