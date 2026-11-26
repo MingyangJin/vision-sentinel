@@ -1,0 +1,54 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+dist/
+build/
+*.egg-info/
+
+# Local runtime state & recordings
+data/
+recordings/
+state/
+*.jsonl
+*.sqlite
+*.db
+*.log
+
+# Secrets & credentials (never commit)
+.env
+.env.*
+*.p8
+*.p12
+*.pem
+*.key
+google-services.json
+GoogleService-Info.plist
+*firebase-adminsdk*.json
+
+# Node / Web UI
+node_modules/
+.next/
+.vite/
+
+# Mobile & desktop client build artifacts
+mobile/ios/DerivedData/
+mobile/ios/.build/
+mobile/android/.gradle/
+mobile/android/build/
+mobile/android/app/build/
+mobile/android/local.properties
+clients/macos-camera/.build/
+clients/macos-camera/dist/
+.swiftpm/
+xcuserdata/
+*.jks
+*.keystore
+
+# OS / Editors
+.DS_Store
+.idea/
+.vscode/

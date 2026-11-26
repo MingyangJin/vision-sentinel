@@ -1,0 +1,25 @@
+id = "desk-watch"
+camera_ids = ["mac_cam"]
+cadence_sec = 20
+window_sec = 8
+asset_kinds = ["video", "frame", "contact_sheet", "audio", "telemetry"]
+tool_timeout_sec = 30.0
+review_stale_sec = 300
+bundle_retention_hours = 2.0
+speaker_enabled = false
+
+[main_model]
+model = "gemini-4-neon-medium"
+effort = "medium"
+
+[vision_model]
+model = "gemini-4-hydrogen-low"
+effort = "low"
+
+[review_policy]
+all_clear_definition = ""
+all_clear_statuses = ["clear"]
+
+[alert_defaults]
+severity = "info"
+cooldown_sec = 30

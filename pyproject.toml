@@ -1,0 +1,60 @@
+[project]
+name = "vision-sentinel"
+version = "0.1.0"
+description = "Camera-agnostic, task-agnostic, harness-agnostic vision AI alerting"
+readme = "README.md"
+license = "MIT"
+authors = [{ name = "Mingyang Jin" }]
+requires-python = ">=3.12"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Operating System :: MacOS",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Multimedia :: Video :: Capture",
+]
+keywords = ["camera", "vision", "ai-agents", "alerting", "rtsp", "onvif", "self-hosted"]
+# The `vision-sentinel` CLI (vs_runtime.cli:main) is declared in packages/runtime and
+# installed into the workspace venv by `uv sync`.
+dependencies = [
+    "vs-runtime",
+    "vs-streamhub",
+    "vs-harness-antigravity",
+    "vs-notify",
+    "vs-ui",
+]
+
+[project.urls]
+Homepage = "https://github.com/MingyangJin/vision-sentinel"
+Repository = "https://github.com/MingyangJin/vision-sentinel"
+Issues = "https://github.com/MingyangJin/vision-sentinel/issues"
+
+[dependency-groups]
+dev = ["pytest>=8"]
+
+[tool.uv]
+package = false
+
+[tool.uv.workspace]
+members = [
+    "packages/runtime",
+    "packages/streamhub",
+    "packages/harnesses/antigravity",
+    "packages/notify",
+    "packages/ui",
+]
+
+[tool.uv.sources]
+vs-runtime = { workspace = true }
+vs-streamhub = { workspace = true }
+vs-harness-antigravity = { workspace = true }
+vs-notify = { workspace = true }
+vs-ui = { workspace = true }
+
+[tool.pytest.ini_options]
+testpaths = ["packages"]
+addopts = "--import-mode=importlib"

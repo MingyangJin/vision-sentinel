@@ -1,0 +1,46 @@
+[project]
+name = "vs-notify"
+version = "0.1.0"
+description = "Vision Sentinel self-hosted Notification Service: alert API, ack and feedback log, delivery sinks"
+license = "MIT"
+authors = [{ name = "Mingyang Jin" }]
+requires-python = ">=3.12"
+readme = "README.md"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Operating System :: MacOS",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Multimedia :: Video :: Capture",
+]
+keywords = ["camera", "vision", "ai-agents", "alerting", "rtsp", "onvif", "self-hosted"]
+dependencies = [
+    "vs-runtime",
+    "fastapi>=0.115",
+    "uvicorn>=0.30",
+    "httpx[http2]>=0.27",
+    "PyJWT[crypto]>=2.9",
+    "pydantic>=2.7",
+]
+
+[project.scripts]
+vs-notify = "vs_notify.server:main"
+
+[project.urls]
+Homepage = "https://github.com/MingyangJin/vision-sentinel"
+Repository = "https://github.com/MingyangJin/vision-sentinel"
+Issues = "https://github.com/MingyangJin/vision-sentinel/issues"
+
+[tool.uv.sources]
+vs-runtime = { workspace = true }
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/vs_notify"]

@@ -1,0 +1,39 @@
+[project]
+name = "vs-harness-antigravity"
+version = "0.1.0"
+description = "Vision Sentinel AgentHarness driver for the official Antigravity CLI (agy) with Gemini"
+requires-python = ">=3.12"
+license = "MIT"
+authors = [{ name = "Mingyang Jin" }]
+readme = "README.md"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Operating System :: MacOS",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Multimedia :: Video :: Capture",
+]
+keywords = ["camera", "vision", "ai-agents", "alerting", "rtsp", "onvif", "self-hosted"]
+dependencies = ["vs-runtime", "pydantic>=2.7"]
+
+[project.scripts]
+vs-agy-probe = "vs_harness_antigravity.cli_probe:main"
+
+[project.urls]
+Homepage = "https://github.com/MingyangJin/vision-sentinel"
+Repository = "https://github.com/MingyangJin/vision-sentinel"
+Issues = "https://github.com/MingyangJin/vision-sentinel/issues"
+
+[tool.uv.sources]
+vs-runtime = { workspace = true }
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/vs_harness_antigravity"]

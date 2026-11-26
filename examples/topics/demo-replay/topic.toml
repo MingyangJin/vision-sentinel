@@ -1,0 +1,23 @@
+id = "demo-replay"
+camera_ids = ["demo"]
+cadence_sec = 60
+window_sec = 10
+asset_kinds = ["video", "frame", "contact_sheet", "audio", "telemetry"]
+tool_timeout_sec = 30.0
+review_stale_sec = 600
+bundle_retention_hours = 6.0
+
+[main_model]
+model = "gemini-4-neon-medium"
+effort = "medium"
+
+[vision_model]
+model = "gemini-4-hydrogen-low"
+effort = "low"
+
+[review_policy]
+all_clear_definition = ""
+all_clear_statuses = ["clear"]
+
+[alert_defaults]
+severity = "warning"

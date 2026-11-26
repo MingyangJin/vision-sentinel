@@ -1,0 +1,33 @@
+# 60-Second Mac Quickstart (Built-in Mac Camera + Microphone, Zero IP Camera)
+#
+# 1. Start Vision Sentinel + Unified Web UI (http://127.0.0.1:8080):
+#      uv run vision-sentinel ui --config examples/mac-camera.toml
+# 2. Build & open the native macOS Camera Client:
+#      ./clients/macos-camera/build-app.sh
+#      open ./clients/macos-camera/dist/VisionSentinelCamera.app
+# 3. Click "Start Streaming" (defaults match http://127.0.0.1:8560 + camera_id "mac_cam").
+
+topics = ["topics/desk-watch"]
+recordings_root = "../data/recordings"
+harness = "antigravity"
+watchdog_interval_sec = 15
+
+[streamhub]
+mediamtx = "never"
+
+[[cameras]]
+camera_id = "mac_cam"
+adapter = "macos_camera"
+speaker_enabled = false
+
+[cameras.options]
+bind = "127.0.0.1"
+port = 8560
+
+[notify]
+db = "../data/notify.sqlite"
+cooldown_sec = 30
+
+[[notify.sinks]]
+type = "desktop"
+dry_run = true

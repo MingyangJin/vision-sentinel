@@ -1,0 +1,39 @@
+# Zero-hardware multi-camera, multi-Topic demo:
+#   - M cameras -> 1 Topic: `multi-cam-demo` subscribes to both `cam_north` and `cam_south`.
+#   - Several Topics side by side: `demo-replay` watches a third camera (`demo`).
+#   All three cameras and both Topics share one StreamHub and one NotifyService.
+#
+#   uv run vision-sentinel check --config examples/multi-cam-demo.toml --check
+#   uv run vision-sentinel check --config examples/multi-cam-demo.toml --harness fake
+#   uv run vision-sentinel run   --config examples/multi-cam-demo.toml --harness fake
+
+topics = ["topics/multi-cam-demo", "topics/demo-replay"]
+recordings_root = "../data/recordings"
+harness = "antigravity"
+watchdog_interval_sec = 15
+
+[streamhub]
+mediamtx = "never"
+
+[[cameras]]
+camera_id = "cam_north"
+adapter = "file"
+source = "sample-media/demo.mp4"
+
+[[cameras]]
+camera_id = "cam_south"
+adapter = "file"
+source = "sample-media/demo.mp4"
+
+[[cameras]]
+camera_id = "demo"
+adapter = "file"
+source = "sample-media/demo.mp4"
+
+[notify]
+db = "../data/notify.sqlite"
+cooldown_sec = 300
+
+[[notify.sinks]]
+type = "desktop"
+dry_run = true

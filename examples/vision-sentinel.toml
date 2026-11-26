@@ -1,0 +1,26 @@
+# Zero-hardware demo: a looping synthetic clip, one Topic, desktop sink in dry-run mode.
+#
+#   uv run vision-sentinel check --config examples/vision-sentinel.toml --check   # plan
+#   uv run vision-sentinel check --config examples/vision-sentinel.toml --harness fake
+#   uv run vision-sentinel run   --config examples/vision-sentinel.toml          # needs agy
+
+topics = ["topics/demo-replay"]
+recordings_root = "../data/recordings"
+harness = "antigravity"
+watchdog_interval_sec = 15
+
+[streamhub]
+mediamtx = "never"     # file replay writes segments directly; no daemon, no ports
+
+[[cameras]]
+camera_id = "demo"
+adapter = "file"
+source = "sample-media/demo.mp4"
+
+[notify]
+db = "../data/notify.sqlite"
+cooldown_sec = 300
+
+[[notify.sinks]]
+type = "desktop"
+dry_run = true

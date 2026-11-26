@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Allows HTTP cleartext for self-hosted LAN / local-network Notification Service servers.
+     For remote access over the internet, always use HTTPS (Tailscale HTTPS, Cloudflare Tunnel, or TLS reverse proxy). -->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="true" />
+</network-security-config>
